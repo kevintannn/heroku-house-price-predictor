@@ -38,11 +38,11 @@ def load_saved_artifacts():
 
     print(">>", os.getcwd())
 
-    with open("./server/artifacts/columns.json", "r") as f:
+    with open("./artifacts/columns.json", "r") as f:
         __data_columns = json.load(f)["data_columns"]
         __locations = __data_columns[3:]
 
-    with open("./server/artifacts/Bengaluru_House_Data_model.pickle", "rb") as f:
+    with open("./artifacts/Bengaluru_House_Data_model.pickle", "rb") as f:
         __model = pickle.load(f)
 
     print("loading saved artifacts...done")
