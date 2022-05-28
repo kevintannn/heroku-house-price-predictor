@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def none():
-    return "Ararara"
+    return "House Price Predictor API"
 
 
 @app.route("/hello")

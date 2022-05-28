@@ -1,7 +1,6 @@
 import json
 import pickle
 import os
-from socket import getservbyport
 import numpy as np
 
 __locations = None
@@ -35,8 +34,6 @@ def load_saved_artifacts():
     global __data_columns
     global __locations
     global __model
-
-    print(">>", os.getcwd())
 
     with open("./artifacts/columns.json", "r") as f:
         __data_columns = json.load(f)["data_columns"]
