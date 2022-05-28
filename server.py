@@ -1,6 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from util import get_estimated_price, get_location_names, load_saved_artifacts
+import pickle
+import json
+import numpy as np
+
+__data_columns = None
+__locations = None
+__model = None
 
 app = Flask(__name__)
 CORS(app)
@@ -17,9 +23,9 @@ def hello():
     return "Hi"
 
 
-@app.route("/get_location_namess")
-def get_location_namess():
-    response = jsonify({"locations": get_location_names()})
+@app.route("/get_location_names")
+def get_location_names():
+    response = jsonify({"locations": get_locations()})
 
     return response
 
@@ -36,6 +42,46 @@ def predict_home_price():
     )
 
     return response
+
+
+def load_saved_artifacts():
+    print("loading saved artifacts...start")
+    global __data_columns
+    global __locations
+    global __model
+
+    with open("artifacts/columns.json", "r") as f:
+        __data_columns = json.load(f)["data_columns"]
+        __locations = __data_columns[3:]
+
+    with open(
+        "artifacts/Bengaluru_House_Data_model.pickle",
+        "rb",
+    ) as f:
+        __model = pickle.load(f)
+
+    print("loading saved artifacts...done")
+
+
+def get_locations():
+    return __locations
+
+
+def get_estimated_price(location, sqft, bhk, bath):
+    try:
+        loc_index = __data_columns.index(location.lower())
+    except:
+        loc_index = -1
+
+    x = np.zeros(len(__data_columns))
+    x[0] = sqft
+    x[1] = bath
+    x[2] = bhk
+
+    if loc_index >= 0:
+        x[loc_index] = 1
+
+    return round(__model.predict([x])[0], 2)
 
 
 if __name__ == "__main__":
