@@ -92,7 +92,7 @@ def get_estimated_price(location, sqft, bhk, bath):
     ) as f:
         model = pickle.load(f)
 
-    return round(model.predict([x])[0] * 187, 2)
+    return round(model.predict([x])[0] * 18714112.46, 2)
 
 
 if __name__ == "__main__":
