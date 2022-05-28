@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import util
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -20,8 +21,10 @@ def hello():
 
 @app.route("/get_location_names")
 def get_location_names():
-    response = jsonify({"locations": os.listdir()})
-    # response.headers.add("Access-Control-Allow-Origin", "*")
+    with open("columns.json", "r") as f:
+        data_columns = json.load(f)["data_columns"]
+        locations = data_columns[3:]
+    response = jsonify({"locations": locations})
 
     return response
 
@@ -36,7 +39,6 @@ def predict_home_price():
     response = jsonify(
         {"estimated_price": util.get_estimated_price(location, total_sqft, bhk, bath)}
     )
-    # response.headers.add("Access-Control-Allow-Origin", "*")
 
     return response
 
