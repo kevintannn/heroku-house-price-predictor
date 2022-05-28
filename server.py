@@ -25,7 +25,10 @@ def hello():
 
 @app.route("/get_location_names")
 def get_location_names():
-    response = jsonify({"locations": get_locations()})
+    with open("columns.json", "r") as f:
+        data_columns = json.load(f)["data_columns"]
+        locations = data_columns[3:]
+    response = jsonify({"locations": locations})
 
     return response
 
