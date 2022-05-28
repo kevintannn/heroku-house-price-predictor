@@ -71,12 +71,14 @@ def get_locations():
 
 
 def get_estimated_price(location, sqft, bhk, bath):
+    with open("columns.json", "r") as f:
+        data_columns = json.load(f)["data_columns"]
     try:
-        loc_index = __data_columns.index(location.lower())
+        loc_index = data_columns.index(location.lower())
     except:
         loc_index = -1
 
-    x = np.zeros(len(__data_columns))
+    x = np.zeros(len(data_columns))
     x[0] = sqft
     x[1] = bath
     x[2] = bhk
@@ -84,7 +86,13 @@ def get_estimated_price(location, sqft, bhk, bath):
     if loc_index >= 0:
         x[loc_index] = 1
 
-    return round(__model.predict([x])[0], 2)
+    with open(
+        "Bengaluru_House_Data_model.pickle",
+        "rb",
+    ) as f:
+        model = pickle.load(f)
+
+    return round(model.predict([x])[0], 2)
 
 
 if __name__ == "__main__":
