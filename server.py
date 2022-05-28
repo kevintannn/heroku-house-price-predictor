@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import util
-import os
-import json
+from util import get_estimated_price, get_location_names, load_saved_artifacts
 
 app = Flask(__name__)
 CORS(app)
@@ -19,12 +17,9 @@ def hello():
     return "Hi"
 
 
-@app.route("/get_location_names")
-def get_location_names():
-    with open("columns.json", "r") as f:
-        data_columns = json.load(f)["data_columns"]
-        locations = data_columns[3:]
-    response = jsonify({"locations": locations})
+@app.route("/get_location_namess")
+def get_location_namess():
+    response = jsonify({"locations": get_location_names()})
 
     return response
 
@@ -37,7 +32,7 @@ def predict_home_price():
     bath = int(request.form["bath"])
 
     response = jsonify(
-        {"estimated_price": util.get_estimated_price(location, total_sqft, bhk, bath)}
+        {"estimated_price": get_estimated_price(location, total_sqft, bhk, bath)}
     )
 
     return response
@@ -45,5 +40,5 @@ def predict_home_price():
 
 if __name__ == "__main__":
     print("Starting python flask server")
-    util.load_saved_artifacts()
+    load_saved_artifacts()
     app.run()
