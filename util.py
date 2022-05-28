@@ -49,6 +49,7 @@ def load_saved_artifacts():
 
 
 if __name__ == "__main__":
+    print(os.getcwd())
     load_saved_artifacts()
     print(get_estimated_price("Kalhalli", 1000, 2, 2))
     print(get_estimated_price("1st Phase JP Nagar", 1000, 2, 2))
