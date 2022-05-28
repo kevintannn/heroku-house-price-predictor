@@ -35,12 +35,12 @@ def load_saved_artifacts():
     global __locations
     global __model
 
-    with open(os.path.join(os.getcwd(), "artifacts", "columns.json"), "r") as f:
+    with open("columns.json", "r") as f:
         __data_columns = json.load(f)["data_columns"]
         __locations = __data_columns[3:]
 
     with open(
-        os.path.join(os.getcwd(), "artifacts", "Bengaluru_House_Data_model.pickle"),
+        "Bengaluru_House_Data_model.pickle",
         "rb",
     ) as f:
         __model = pickle.load(f)
@@ -49,7 +49,6 @@ def load_saved_artifacts():
 
 
 if __name__ == "__main__":
-    print(os.getcwd())
     load_saved_artifacts()
     print(get_estimated_price("Kalhalli", 1000, 2, 2))
     print(get_estimated_price("1st Phase JP Nagar", 1000, 2, 2))
